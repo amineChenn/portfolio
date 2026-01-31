@@ -15,16 +15,21 @@ const Hero = () => {
   const { t, language } = useLanguage();
 
   useEffect(() => {
+    // Check if mobile - disable scrub on touch devices
+    const isMobile = window.matchMedia('(max-width: 768px)').matches ||
+                     'ontouchstart' in window ||
+                     navigator.maxTouchPoints > 0;
+
     const ctx = gsap.context(() => {
-      // Parallax effect on scroll
+      // Parallax effect on scroll - disabled on mobile to prevent scroll blocking
       gsap.to(titleRef.current, {
-        yPercent: 50,
+        yPercent: isMobile ? 0 : 50,
         ease: 'none',
         scrollTrigger: {
           trigger: heroRef.current,
           start: 'top top',
           end: 'bottom top',
-          scrub: true,
+          scrub: isMobile ? false : 1, // Disable scrub on mobile
         },
       });
 

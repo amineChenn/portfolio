@@ -4,6 +4,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Helper to check if device is mobile/touch
+const isMobileDevice = () => {
+  if (typeof window === 'undefined') return false;
+  return (
+    window.matchMedia('(max-width: 768px)').matches ||
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.matchMedia('(pointer: coarse)').matches
+  );
+};
+
 /**
  * Custom hook for scroll-triggered animations using GSAP
  * Provides various animation presets for portfolio sections
@@ -83,6 +94,10 @@ export const useScrollAnimation = (options = {}) => {
 
     gsap.set(element, animConfig.from);
 
+    // Disable scrub on mobile to prevent scroll blocking
+    const isMobile = isMobileDevice();
+    const safeScrub = isMobile ? false : scrub;
+
     const tween = gsap.to(element, {
       ...animConfig.to,
       duration,
@@ -92,7 +107,7 @@ export const useScrollAnimation = (options = {}) => {
         trigger: element,
         start,
         end,
-        scrub,
+        scrub: safeScrub,
         markers,
         toggleActions: once ? 'play none none none' : 'play reverse play reverse',
       },
@@ -186,6 +201,14 @@ export const useParallax = (options = {}) => {
     const element = elementRef.current;
     if (!element) return;
 
+    // Disable parallax on mobile to prevent scroll issues
+    const isMobile = isMobileDevice();
+    if (isMobile) {
+      // On mobile, just set the element to its natural position
+      gsap.set(element, { y: 0, x: 0 });
+      return;
+    }
+
     const distance = 100 * speed;
     const property = direction === 'vertical' ? 'y' : 'x';
 
@@ -199,7 +222,7 @@ export const useParallax = (options = {}) => {
           trigger: element,
           start,
           end,
-          scrub: true,
+          scrub: 1, // Use number instead of true for smoother effect
         },
       }
     );

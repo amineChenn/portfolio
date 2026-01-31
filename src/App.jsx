@@ -14,7 +14,6 @@ import Scene from './components/3d/Scene';
 // UI Components
 import Navbar from './components/ui/Navbar';
 import CustomCursor from './components/ui/CustomCursor';
-import ScrollCodeBackground from './components/ui/ScrollCodeBackground';
 
 // Sections
 import Hero from './components/sections/Hero';
@@ -123,11 +122,8 @@ function App() {
       {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* 3D Background Scene */}
+      {/* 3D Background Scene - Subtle particles */}
       <Scene mousePosition={normalizedPosition} />
-
-      {/* Code-themed scroll background effects */}
-      <ScrollCodeBackground />
 
       {/* Noise overlay for texture */}
       <div className="noise-overlay" />

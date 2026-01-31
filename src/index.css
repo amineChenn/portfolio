@@ -34,7 +34,10 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   overflow-x: hidden;
+  overflow-y: auto !important; /* Force vertical scroll */
   background-color: transparent;
+  /* iOS momentum scrolling */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -43,8 +46,13 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: hidden;
+  overflow-y: auto !important; /* Force vertical scroll */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* iOS momentum scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent iOS rubber-banding issues */
+  overscroll-behavior-y: none;
 }
 
 /* Prevent horizontal scroll on all containers */
@@ -76,6 +84,43 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* Mobile touch scroll fixes */
+@media (pointer: coarse), (max-width: 768px) {
+  html, body {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Disable smooth scroll behavior on mobile for native feel */
+  html.lenis, html.lenis body {
+    scroll-behavior: auto !important;
+  }
+
+  /* Ensure main content is scrollable */
+  #root, main {
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Prevent fixed elements from blocking touch */
+  .fixed {
+    touch-action: none;
+    pointer-events: none;
+  }
+
+  .fixed.pointer-events-none {
+    pointer-events: none !important;
+  }
+
+  /* Allow touch on interactive fixed elements */
+  nav.fixed, header.fixed {
+    pointer-events: auto;
+    touch-action: auto;
+  }
 }
 
 /* Custom scrollbar */
