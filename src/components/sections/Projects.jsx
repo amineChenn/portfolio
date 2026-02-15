@@ -230,12 +230,11 @@ const ProjectModal = ({ project, onClose, language, t }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="modal-overlay fixed inset-0 z-[60] flex items-start md:items-center justify-center p-0 md:p-8"
+      className="modal-overlay fixed inset-0 z-[60] flex items-start md:items-center justify-center p-0 md:p-8 overflow-y-auto"
       onClick={onClose}
-      style={{ touchAction: 'none' }}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-lg" />
+      <div className="modal-backdrop absolute inset-0 bg-black/80 backdrop-blur-lg" />
 
       {/* Modal */}
       <motion.div
@@ -250,6 +249,7 @@ const ProjectModal = ({ project, onClose, language, t }) => {
           height: 'auto',
           WebkitOverflowScrolling: 'touch',
           overscrollBehavior: 'contain',
+          backgroundColor: 'rgb(10, 22, 40)',
         }}
         onClick={(e) => e.stopPropagation()}
       >

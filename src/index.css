@@ -83,24 +83,39 @@ html.lenis, html.lenis body {
 }
 
 /* Modal open - prevent background scroll but allow modal internal scroll */
-html.modal-open,
+html.modal-open {
+  overflow: hidden !important;
+}
+
 html.modal-open body {
   overflow: hidden !important;
   position: fixed;
   width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--color-background);
 }
 
 /* Allow touch scrolling inside the modal overlay */
 html.modal-open .modal-overlay {
   touch-action: pan-y !important;
   -webkit-overflow-scrolling: touch !important;
+  overflow-y: auto !important;
 }
 
 html.modal-open .modal-content {
   touch-action: pan-y !important;
   -webkit-overflow-scrolling: touch !important;
   overscroll-behavior: contain;
+}
+
+/* Disable backdrop-blur on modal backdrop for mobile (causes white screen on iOS) */
+@media (max-width: 768px) {
+  .modal-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0, 0, 0, 0.92) !important;
+  }
 }
 
 .lenis.lenis-scrolling iframe {
