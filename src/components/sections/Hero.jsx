@@ -9,19 +9,58 @@ import Logo3D from '../3d/Logo3D';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Static animation variants (outside component to avoid re-creation on every render)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const letterAnimation = {
+  hidden: { opacity: 0, y: 100 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      delay: i * 0.05,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
+
+const socialLinks = [
+  { icon: Linkedin, href: personalInfo.linkedin, label: 'LinkedIn' },
+];
+
 const Hero = () => {
   const heroRef = useRef(null);
   const titleRef = useRef(null);
   const { t, language } = useLanguage();
 
   useEffect(() => {
-    // Check if mobile - disable scrub on touch devices
     const isMobile = window.matchMedia('(max-width: 768px)').matches ||
                      'ontouchstart' in window ||
                      navigator.maxTouchPoints > 0;
 
     const ctx = gsap.context(() => {
-      // Parallax effect on scroll - disabled on mobile to prevent scroll blocking
       gsap.to(titleRef.current, {
         yPercent: isMobile ? 0 : 50,
         ease: 'none',
@@ -29,56 +68,15 @@ const Hero = () => {
           trigger: heroRef.current,
           start: 'top top',
           end: 'bottom top',
-          scrub: isMobile ? false : 1, // Disable scrub on mobile
+          scrub: isMobile ? false : 1,
         },
       });
-
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-  };
-
-  const letterAnimation = {
-    hidden: { opacity: 0, y: 100 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        delay: i * 0.05,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    }),
-  };
-
   const name = personalInfo.name;
-
-  const socialLinks = [
-    { icon: Linkedin, href: personalInfo.linkedin, label: 'LinkedIn' },
-  ];
 
   return (
     <section

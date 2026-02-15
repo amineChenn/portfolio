@@ -1,6 +1,23 @@
 import { useEffect, useState } from 'react';
 import { motion, useSpring } from 'framer-motion';
 
+const cursorVariants = {
+  default: {
+    width: 12,
+    height: 12,
+    backgroundColor: 'transparent',
+    border: '2px solid rgba(37, 99, 235, 0.8)',
+    mixBlendMode: 'normal',
+  },
+  hover: {
+    width: 48,
+    height: 48,
+    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+    border: '2px solid rgba(37, 99, 235, 1)',
+    mixBlendMode: 'normal',
+  },
+};
+
 const CustomCursor = () => {
   const [cursorVariant, setCursorVariant] = useState('default');
   const [isVisible, setIsVisible] = useState(false);
@@ -9,61 +26,44 @@ const CustomCursor = () => {
   const cursorY = useSpring(0, { stiffness: 500, damping: 28 });
 
   useEffect(() => {
+    // Skip on mobile
+    if (window.innerWidth < 768) return;
+
     const moveCursor = (e) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-      setIsVisible(true);
+      if (!isVisible) setIsVisible(true);
     };
 
     const handleMouseEnter = () => setIsVisible(true);
     const handleMouseLeave = () => setIsVisible(false);
 
-    // Add hover listeners for interactive elements
-    const addHoverListeners = () => {
-      const interactiveElements = document.querySelectorAll(
-        'a, button, [data-cursor="pointer"]'
-      );
-
-      interactiveElements.forEach((el) => {
-        el.addEventListener('mouseenter', () => setCursorVariant('hover'));
-        el.addEventListener('mouseleave', () => setCursorVariant('default'));
-      });
+    // Event delegation instead of MutationObserver + querySelectorAll
+    const handleMouseOver = (e) => {
+      if (e.target.closest('a, button, [data-cursor="pointer"]')) {
+        setCursorVariant('hover');
+      }
+    };
+    const handleMouseOut = (e) => {
+      if (e.target.closest('a, button, [data-cursor="pointer"]')) {
+        setCursorVariant('default');
+      }
     };
 
     window.addEventListener('mousemove', moveCursor);
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
-
-    // Initial setup and mutation observer for dynamic content
-    addHoverListeners();
-
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseout', handleMouseOut);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
-      observer.disconnect();
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
     };
-  }, [cursorX, cursorY]);
-
-  const variants = {
-    default: {
-      width: 12,
-      height: 12,
-      backgroundColor: 'transparent',
-      border: '2px solid rgba(99, 102, 241, 0.8)',
-      mixBlendMode: 'normal',
-    },
-    hover: {
-      width: 48,
-      height: 48,
-      backgroundColor: 'rgba(99, 102, 241, 0.1)',
-      border: '2px solid rgba(99, 102, 241, 1)',
-      mixBlendMode: 'normal',
-    },
-  };
+  }, [cursorX, cursorY, isVisible]);
 
   // Only show on desktop
   if (typeof window !== 'undefined' && window.innerWidth < 768) {
@@ -82,7 +82,7 @@ const CustomCursor = () => {
           translateY: '-50%',
         }}
         animate={cursorVariant}
-        variants={variants}
+        variants={cursorVariants}
         transition={{
           type: 'spring',
           stiffness: 500,
@@ -92,7 +92,7 @@ const CustomCursor = () => {
 
       {/* Cursor dot */}
       <motion.div
-        className="fixed top-0 left-0 w-1 h-1 bg-indigo-500 rounded-full pointer-events-none z-[9999] hidden md:block"
+        className="fixed top-0 left-0 w-1 h-1 bg-blue-600 rounded-full pointer-events-none z-[9999] hidden md:block"
         style={{
           x: cursorX,
           y: cursorY,
@@ -113,7 +113,7 @@ const CustomCursor = () => {
           translateX: '-50%',
           translateY: '-50%',
           background:
-            'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%)',
           opacity: isVisible ? 1 : 0,
         }}
       />

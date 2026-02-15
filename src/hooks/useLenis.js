@@ -55,15 +55,20 @@ export const useLenis = () => {
     gsap.ticker.add(rafCallback);
     gsap.ticker.lagSmoothing(0);
 
-    // Refresh ScrollTrigger on resize for mobile
+    // Debounced resize handler to avoid expensive ScrollTrigger.refresh() spam
+    let resizeTimeout;
     const handleResize = () => {
-      ScrollTrigger.refresh();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
     };
 
     window.addEventListener('resize', handleResize);
 
     // Cleanup
     return () => {
+      clearTimeout(resizeTimeout);
       lenis.destroy();
       gsap.ticker.remove(rafCallback);
       window.removeEventListener('resize', handleResize);

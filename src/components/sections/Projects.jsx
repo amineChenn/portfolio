@@ -79,7 +79,11 @@ const ProjectCard = ({ project, index, isInView, onClick, language, t }) => {
     <div
       ref={cardRef}
       className="group relative"
+      role="button"
+      tabIndex={0}
       onClick={() => onClick(project)}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(project); } }}
+      aria-label={`${t('projects.viewDetails')}: ${title}`}
       style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
     >
       <div className="relative overflow-hidden rounded-2xl glass-effect cursor-pointer transition-all duration-500 hover:border-blue-500/30">
@@ -185,9 +189,33 @@ const ProjectCard = ({ project, index, isInView, onClick, language, t }) => {
 };
 
 const ProjectModal = ({ project, onClose, language, t }) => {
+  const scrollRef = useRef(null);
+
   useEffect(() => {
+    // Save current scroll position before locking
+    const scrollY = window.scrollY;
     document.documentElement.classList.add('modal-open');
-    return () => { document.documentElement.classList.remove('modal-open'); };
+    document.body.style.top = `-${scrollY}px`;
+
+    // Prevent background scroll on touch devices
+    const preventTouchMove = (e) => {
+      // Allow scrolling inside the modal content
+      if (scrollRef.current && scrollRef.current.contains(e.target)) {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    document.addEventListener('touchmove', preventTouchMove, { passive: false });
+
+    return () => {
+      document.removeEventListener('touchmove', preventTouchMove);
+      document.documentElement.classList.remove('modal-open');
+      // Restore scroll position
+      const top = document.body.style.top;
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(top || '0') * -1);
+    };
   }, []);
 
   if (!project) return null;
@@ -202,32 +230,43 @@ const ProjectModal = ({ project, onClose, language, t }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+      className="modal-overlay fixed inset-0 z-[60] flex items-start md:items-center justify-center p-0 md:p-8"
       onClick={onClose}
+      style={{ touchAction: 'none' }}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-lg" />
 
-      {/* Modal - More padding */}
+      {/* Modal */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        ref={scrollRef}
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 50 }}
+        exit={{ opacity: 0, scale: 0.95, y: 30 }}
         transition={{ type: 'spring', damping: 25 }}
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-auto glass-effect rounded-2xl"
+        className="modal-content relative w-full max-w-4xl md:max-h-[85vh] md:rounded-2xl glass-effect overflow-y-auto"
+        style={{
+          maxHeight: '100dvh',
+          height: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors z-10"
-        >
-          <X size={20} />
-        </button>
+        {/* Sticky close button - always visible */}
+        <div className="sticky top-0 z-20 flex justify-end p-3 md:p-4">
+          <button
+            onClick={onClose}
+            className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm transition-colors border border-white/20"
+            aria-label="Close modal"
+          >
+            <X size={22} className="text-white" />
+          </button>
+        </div>
 
         {/* Header */}
         <div
-          className="relative h-48 md:h-64 overflow-hidden"
+          className="relative h-36 md:h-56 overflow-hidden -mt-14 md:-mt-16"
           style={{
             background: `linear-gradient(135deg, ${project.color}40 0%, ${project.color}10 100%)`,
           }}
@@ -244,8 +283,8 @@ const ProjectModal = ({ project, onClose, language, t }) => {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[var(--color-surface)] to-transparent h-32" />
         </div>
 
-        {/* Content - More padding */}
-        <div className="p-8 md:p-12 -mt-16 relative">
+        {/* Content */}
+        <div className="px-6 pb-8 md:px-12 md:pb-12 -mt-12 relative">
           {/* Category */}
           <span
             className="inline-block px-4 py-2 text-sm font-medium rounded-full mb-4"
@@ -266,7 +305,7 @@ const ProjectModal = ({ project, onClose, language, t }) => {
           </p>
 
           {/* Metrics */}
-          <div className="grid grid-cols-3 gap-4 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
             {Object.entries(project.metrics).map(([key, value], index) => {
               const icons = { users: Users, organizations: Users, modules: Zap, clients: Users, experts: Users, aum: TrendingUp, team: Users, duration: Zap, methodology: Zap, apps: Zap, marketShare: TrendingUp };
               const Icon = icons[key] || Zap;

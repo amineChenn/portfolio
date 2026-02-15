@@ -80,6 +80,9 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
     return new Float32Array(maxConnections * 6);
   }, [particleCount]);
 
+  const connectionDistanceSq = connectionDistance * connectionDistance;
+  const frameCounter = useRef(0);
+
   useFrame((state) => {
     const time = state.clock.elapsedTime;
 
@@ -93,32 +96,32 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
 
     const posArray = pointsRef.current.geometry.attributes.position.array;
 
+    // Hoist mouse check outside loop (same result for all particles)
+    const mouseVal = mouse?.current || mouse;
+    const hasMouse = mouseVal && !isMobile && mouseVal.x !== undefined;
+    const mouseX = hasMouse ? mouseVal.x * 8 : 0;
+    const mouseY = hasMouse ? mouseVal.y * 5 : 0;
+
     // Update particle positions with orbital movement
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
       const angle = angles[i];
 
-      // Update angles for orbital movement
       angle.theta += angle.thetaSpeed;
       angle.phi += angle.phiSpeed;
 
-      // Oscillate radius for breathing effect
       const currentRadius = angle.radius + Math.sin(time * 0.5 + angle.radiusOscillation) * 0.5;
 
-      // Calculate new 3D position
       posArray[i3] = currentRadius * Math.sin(angle.phi) * Math.cos(angle.theta);
       posArray[i3 + 1] = currentRadius * Math.sin(angle.phi) * Math.sin(angle.theta);
       posArray[i3 + 2] = currentRadius * Math.cos(angle.phi) - 5;
 
-      // Add organic drift
       posArray[i3] += velocities[i].x;
       posArray[i3 + 1] += velocities[i].y;
       posArray[i3 + 2] += velocities[i].z;
 
-      // Subtle mouse interaction (push particles away in 3D)
-      if (mouse && !isMobile && mouse.x !== undefined) {
-        const mouseX = mouse.x * 8;
-        const mouseY = mouse.y * 5;
+      // Mouse interaction
+      if (hasMouse) {
         const dx = posArray[i3] - mouseX;
         const dy = posArray[i3 + 1] - mouseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -127,15 +130,16 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
           const force = (3 - dist) / 3 * 0.03;
           posArray[i3] += (dx / dist) * force;
           posArray[i3 + 1] += (dy / dist) * force;
-          posArray[i3 + 2] += force * 0.5; // Push back in Z too
+          posArray[i3 + 2] += force * 0.5;
         }
       }
     }
 
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
 
-    // Update connection lines
-    if (linesRef.current) {
+    // Update connection lines every 3rd frame (imperceptible for slow particles, saves CPU)
+    frameCounter.current++;
+    if (linesRef.current && frameCounter.current % 3 === 0) {
       const linePos = linesRef.current.geometry.attributes.position.array;
       const lineCol = linesRef.current.geometry.attributes.color.array;
       let lineIndex = 0;
@@ -148,12 +152,13 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
           const dx = posArray[i3] - posArray[j3];
           const dy = posArray[i3 + 1] - posArray[j3 + 1];
           const dz = posArray[i3 + 2] - posArray[j3 + 2];
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          const distSq = dx * dx + dy * dy + dz * dz;
 
-          if (dist < connectionDistance && lineIndex < linePos.length - 6) {
+          // Use squared distance to avoid sqrt when not needed
+          if (distSq < connectionDistanceSq && lineIndex < linePos.length - 6) {
+            const dist = Math.sqrt(distSq);
             const opacity = (1 - dist / connectionDistance) * 0.12;
 
-            // Line vertices
             linePos[lineIndex] = posArray[i3];
             linePos[lineIndex + 1] = posArray[i3 + 1];
             linePos[lineIndex + 2] = posArray[i3 + 2];
@@ -161,7 +166,6 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
             linePos[lineIndex + 4] = posArray[j3 + 1];
             linePos[lineIndex + 5] = posArray[j3 + 2];
 
-            // Violet color with fade
             const intensity = opacity * 2.5;
             lineCol[lineIndex] = 0.65 * intensity;
             lineCol[lineIndex + 1] = 0.55 * intensity;
@@ -175,12 +179,8 @@ const AnimatedParticles3D = ({ mouse, isMobile }) => {
         }
       }
 
-      // Clear unused lines
-      for (let i = lineIndex; i < linePos.length; i++) {
-        linePos[i] = 0;
-        lineCol[i] = 0;
-      }
-
+      // Use drawRange instead of zeroing entire unused buffer
+      linesRef.current.geometry.setDrawRange(0, lineIndex / 3);
       linesRef.current.geometry.attributes.position.needsUpdate = true;
       linesRef.current.geometry.attributes.color.needsUpdate = true;
     }
@@ -250,6 +250,7 @@ const FloatingShapes = ({ isMobile }) => {
   const group3Ref = useRef();
 
   useFrame((state) => {
+    if (isMobile) return; // Skip frame work on mobile
     const time = state.clock.elapsedTime;
 
     if (group1Ref.current) {
@@ -382,30 +383,39 @@ const GradientBackground = () => {
 };
 
 // Main Scene
-const Scene = ({ mousePosition }) => {
+const Scene = ({ mousePositionRef }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(
-        window.innerWidth < 768 ||
+      const mobile = window.innerWidth < 768 ||
         'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0
-      );
+        navigator.maxTouchPoints > 0;
+      setIsMobile(prev => prev === mobile ? prev : mobile);
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 250);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <div className="canvas-container">
       <Canvas
         camera={{ position: [0, 0, 12], fov: 60 }}
-        dpr={[1, 1.5]}
+        dpr={isMobile ? [1, 1] : [1, 1.5]}
         gl={{
-          antialias: true,
+          antialias: !isMobile,
           alpha: false,
           powerPreference: 'high-performance',
         }}
@@ -427,7 +437,7 @@ const Scene = ({ mousePosition }) => {
           <FloatingShapes isMobile={isMobile} />
 
           {/* 3D Animated particles with connections */}
-          <AnimatedParticles3D mouse={mousePosition} isMobile={isMobile} />
+          <AnimatedParticles3D mouse={mousePositionRef} isMobile={isMobile} />
         </Suspense>
 
         <Preload all />

@@ -1,26 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const useMousePosition = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [normalizedPosition, setNormalizedPosition] = useState({ x: 0, y: 0 });
+  const normalizedPositionRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      setNormalizedPosition({
+      normalizedPositionRef.current = {
         x: (e.clientX / window.innerWidth) * 2 - 1,
         y: -(e.clientY / window.innerHeight) * 2 + 1,
-      });
+      };
     };
 
     window.addEventListener('mousemove', updateMousePosition);
-
-    return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-    };
+    return () => window.removeEventListener('mousemove', updateMousePosition);
   }, []);
 
-  return { mousePosition, normalizedPosition };
+  return { normalizedPositionRef };
 };
 
 export default useMousePosition;

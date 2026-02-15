@@ -28,32 +28,56 @@ const Navbar = () => {
   const { t } = useLanguage();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    let ticking = false;
 
-      // Determine active section
-      const sections = navigation.map(item => item.href.replace('#', ''));
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 150) {
-            setActiveSection(section);
-            break;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 50);
+
+        const sections = navigation.map(item => item.href.replace('#', ''));
+        for (const section of [...sections].reverse()) {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 150) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
-      }
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleNavClick = (href) => {
+    const wasMenuOpen = isMobileMenuOpen;
     setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+
+    const scrollToElement = () => {
+      const element = document.querySelector(href);
+      if (element) {
+        // On mobile, use native scrollIntoView with a slight offset for the navbar
+        const navbarHeight = 80;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: elementPosition - navbarHeight,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    // If mobile menu was open, wait for it to close before scrolling
+    if (wasMenuOpen) {
+      setTimeout(scrollToElement, 350);
+    } else {
+      scrollToElement();
     }
   };
 
@@ -151,7 +175,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 md:hidden"
+            className="fixed inset-0 z-[55] md:hidden"
           >
             <div
               className="absolute inset-0 bg-black/80 backdrop-blur-lg"

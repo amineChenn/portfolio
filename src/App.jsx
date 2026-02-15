@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Smooth scrolling
@@ -8,20 +8,20 @@ import useMousePosition from './hooks/useMousePosition';
 // i18n
 import { useLanguage } from './i18n/LanguageContext';
 
-// 3D Scene
-import Scene from './components/3d/Scene';
+// Lazy-loaded 3D Scene (large Three.js bundle)
+const Scene = lazy(() => import('./components/3d/Scene'));
 
 // UI Components
 import Navbar from './components/ui/Navbar';
 import CustomCursor from './components/ui/CustomCursor';
 
-// Sections
+// Eagerly load Hero (above the fold), lazy load the rest
 import Hero from './components/sections/Hero';
-import About from './components/sections/About';
-import Experience from './components/sections/Experience';
-import Skills from './components/sections/Skills';
-import Projects from './components/sections/Projects';
-import Contact from './components/sections/Contact';
+const About = lazy(() => import('./components/sections/About'));
+const Experience = lazy(() => import('./components/sections/Experience'));
+const Skills = lazy(() => import('./components/sections/Skills'));
+const Projects = lazy(() => import('./components/sections/Projects'));
+const Contact = lazy(() => import('./components/sections/Contact'));
 import Footer from './components/sections/Footer';
 
 // Loading Screen Component
@@ -99,14 +99,16 @@ const LoadingScreen = ({ onComplete }) => {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const { normalizedPosition } = useMousePosition();
+  const { normalizedPositionRef } = useMousePosition();
+
+  // Stable callback to prevent LoadingScreen effect re-runs
+  const handleLoadingComplete = useCallback(() => setIsLoading(false), []);
 
   // Initialize smooth scrolling
   useLenis();
 
-  // Preload assets
+  // Preload fonts
   useEffect(() => {
-    // Preload fonts
     document.fonts.ready.then(() => {
       console.log('Fonts loaded');
     });
@@ -116,14 +118,16 @@ function App() {
     <>
       {/* Loading Screen */}
       <AnimatePresence>
-        {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+        {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       </AnimatePresence>
 
       {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* 3D Background Scene - Subtle particles */}
-      <Scene mousePosition={normalizedPosition} />
+      {/* 3D Background Scene - Lazy loaded */}
+      <Suspense fallback={null}>
+        <Scene mousePositionRef={normalizedPositionRef} />
+      </Suspense>
 
       {/* Noise overlay for texture */}
       <div className="noise-overlay" />
@@ -141,11 +145,13 @@ function App() {
         {/* Page Sections */}
         <main>
           <Hero />
-          <About />
-          <Experience />
-          <Skills />
-          <Projects />
-          <Contact />
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <About />
+            <Experience />
+            <Skills />
+            <Projects />
+            <Contact />
+          </Suspense>
         </main>
 
         {/* Footer */}
