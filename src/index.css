@@ -96,6 +96,12 @@ html.modal-open body {
   background-color: var(--color-background);
 }
 
+/* Hide navbar behind modal to prevent overlap on mobile */
+html.modal-open nav {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* Allow touch scrolling inside the modal overlay */
 html.modal-open .modal-overlay {
   touch-action: pan-y !important;
