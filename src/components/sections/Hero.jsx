@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowDown, Github, Linkedin } from 'lucide-react';
+import { ArrowDown, Linkedin } from 'lucide-react';
 import { personalInfo } from '../../data/portfolio';
 import { useLanguage } from '../../i18n/LanguageContext';
 import Logo3D from '../3d/Logo3D';
@@ -76,9 +76,7 @@ const Hero = () => {
 
   const name = personalInfo.name;
 
-  // Social links without email
   const socialLinks = [
-    { icon: Github, href: personalInfo.github, label: 'GitHub' },
     { icon: Linkedin, href: personalInfo.linkedin, label: 'LinkedIn' },
   ];
 

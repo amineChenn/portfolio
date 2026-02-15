@@ -8,10 +8,10 @@ export const personalInfo = {
   status: "Freelance",
   location: "Paris, France",
   linkedin: "https://www.linkedin.com/in/amine-chennaoui/",
-  github: "https://github.com/aminechennaoui",
+  email: "chennaoui.amine.pro@gmail.com",
   tagline: {
-    en: "Crafting elegant solutions through code",
-    fr: "Créer des solutions élégantes par le code"
+    en: "Crafting elegant and performant solutions through code",
+    fr: "Créer des solutions élégantes et performantes par le code"
   },
 };
 
@@ -63,92 +63,90 @@ export const experiences = [
     },
     location: "Paris, France",
     description: {
-      en: "Working on digital transformation projects for one of the leading European legal and regulatory publishers.",
-      fr: "Travail sur des projets de transformation numérique pour l'un des principaux éditeurs juridiques et réglementaires européens."
+      en: "Working on Previsoft, the leading French HSE software for occupational risk assessment, used by 1,000+ organizations. Part of Lefebvre Dalloz, the European leader in legal and regulatory publishing.",
+      fr: "Travail sur Previsoft, le logiciel HSE de référence pour l'évaluation des risques professionnels, utilisé par plus de 1 000 organisations. Au sein de Lefebvre Dalloz, leader européen de l'édition juridique et réglementaire."
     },
     achievements: {
       en: [
-        "Developing modern web applications with Angular and Spring Boot",
-        "Implementing clean architecture and best practices",
-        "Contributing to code review and team documentation",
-        "Working in Agile methodology with continuous delivery"
+        "Migrated build system from Gulp/Bower to npm/Webpack",
+        "Implemented full internationalization system (translations and country-specific regulations)",
+        "Developed an internal translation key management tool",
+        "Currently leading the React migration of the frontend"
       ],
       fr: [
-        "Développement d'applications web modernes avec Angular et Spring Boot",
-        "Implémentation d'architecture propre et bonnes pratiques",
-        "Contribution aux revues de code et documentation équipe",
-        "Travail en méthodologie Agile avec livraison continue"
+        "Migration du build system de Gulp/Bower vers npm/Webpack",
+        "Implémentation du système complet d'internationalisation (traductions et réglementations par pays)",
+        "Développement d'un outil interne de gestion des clés de traduction",
+        "Actuellement en charge de la migration React du frontend"
       ]
     },
-    technologies: ["Java", "Spring Boot", "Angular", "TypeScript", "PostgreSQL", "Docker", "GitLab CI/CD"],
+    technologies: ["Java", "Spring Boot", "AngularJS", "React", "TypeScript", "PostgreSQL", "Webpack", "Jenkins"],
     color: "#2563eb",
   },
   {
     id: 2,
     company: "Amundi",
     position: {
-      en: "Fullstack Developer Java/Angular",
-      fr: "Développeur Fullstack Java/Angular"
+      en: "Fullstack Engineer Java/Angular",
+      fr: "Ingénieur Fullstack Java/Angular"
     },
     period: {
-      en: "2021 - 2024",
-      fr: "2021 - 2024"
+      en: "2020 - 2024",
+      fr: "2020 - 2024"
     },
     location: "Paris, France",
     description: {
-      en: "Developed the \"Maestro\" framework used by internal teams at Europe's largest asset manager. Built robust, scalable solutions handling billions in transactions.",
-      fr: "Développement du framework \"Maestro\" utilisé par les équipes internes du plus grand gestionnaire d'actifs européen. Construction de solutions robustes et scalables gérant des milliards de transactions."
+      en: "Within Amundi's Core team, contributed to the development and evolution of the internal \"Maestro\" Angular framework used by all internal development teams.",
+      fr: "Au sein de l'équipe Core d'Amundi, contribution au développement et à l'évolution du framework Angular interne \"Maestro\" utilisé par l'ensemble des équipes de développement internes."
     },
     achievements: {
       en: [
-        "Architected and developed enterprise-grade Angular applications with complex state management",
-        "Designed and implemented RESTful microservices using Spring Boot and Spring Security",
-        "Optimized database queries and implemented caching strategies, improving performance by 40%",
-        "Led code reviews and mentored junior developers on best practices",
-        "Implemented CI/CD pipelines reducing deployment time by 60%"
+        "Developed reusable Angular components in collaboration with the UX/UI team",
+        "Created a user preferences system with MongoDB/SQL persistence",
+        "Built a custom bash script for automatic changelog generation (Git workflow)",
+        "Provided technical support for Amundi developers on the framework (front & back)"
       ],
       fr: [
-        "Architecture et développement d'applications Angular enterprise avec gestion d'état complexe",
-        "Conception et implémentation de microservices RESTful avec Spring Boot et Spring Security",
-        "Optimisation des requêtes base de données et stratégies de cache, amélioration des performances de 40%",
-        "Direction des revues de code et mentorat des développeurs juniors",
-        "Implémentation de pipelines CI/CD réduisant le temps de déploiement de 60%"
+        "Développement de composants Angular réutilisables en collaboration avec l'équipe UX/UI",
+        "Création d'un système de préférences utilisateurs avec persistance MongoDB/SQL",
+        "Mise en place d'un script bash custom pour la génération automatique du changelog (workflow Git)",
+        "Support technique pour les développeurs Amundi sur le framework (front & back)"
       ]
     },
-    technologies: ["Java", "Spring Boot", "Angular", "TypeScript", "Oracle", "Docker", "Kubernetes"],
+    technologies: ["Angular", "TypeScript", "Java", "Spring", "MongoDB", "SQL", "Git", "Maven", "Artifactory", "Keycloak"],
     color: "#3b82f6",
   },
   {
     id: 3,
     company: "Thales",
     position: {
-      en: "Technical Lead - Enterprise Integration Platform",
-      fr: "Technical Lead - Enterprise Integration Platform"
+      en: "Technical Lead",
+      fr: "Technical Lead"
     },
     period: {
-      en: "2018 - 2021",
-      fr: "2018 - 2021"
+      en: "2019 - 2020",
+      fr: "2019 - 2020"
     },
-    location: "France",
+    location: "Vélizy-Villacoublay, France",
     description: {
-      en: "Led the development of an Enterprise Integration Platform project, coordinating technical decisions and ensuring code quality across the team.",
-      fr: "Direction du développement d'un projet d'Enterprise Integration Platform, coordination des décisions techniques et assurance qualité du code à travers l'équipe."
+      en: "Technical leader on the EIP (Enterprise Integration Platform) project as part of Thales group's digital transformation. Led the setup of an Enterprise Service Bus (ESB) and a secured API Gateway.",
+      fr: "Leader technique sur le projet EIP (Enterprise Integration Platform) dans le cadre de la transformation digitale du groupe Thales. Pilotage de la mise en place d'un bus d'échange entreprise (ESB) et d'une API Gateway sécurisée."
     },
     achievements: {
       en: [
-        "Led a team of developers on critical integration projects",
-        "Architected scalable integration solutions for enterprise clients",
-        "Implemented security best practices and compliance requirements",
-        "Coordinated with multiple teams in Agile/Scrum environments"
+        "Architecture and development of the enterprise integration platform",
+        "Set up unit testing framework (Powermock) and code analysis (SonarQube)",
+        "Implemented CI/CD with Maven and GitLab-CI",
+        "Technical coordination with teams and best practices transmission"
       ],
       fr: [
-        "Direction d'une équipe de développeurs sur des projets d'intégration critiques",
-        "Architecture de solutions d'intégration scalables pour clients enterprise",
-        "Implémentation des bonnes pratiques de sécurité et conformité",
-        "Coordination avec plusieurs équipes en environnement Agile/Scrum"
+        "Architecture et développement de la plateforme d'intégration d'entreprise",
+        "Mise en place d'un framework de tests unitaires (Powermock) et d'analyse de code (SonarQube)",
+        "Implémentation de la CI/CD avec Maven et GitLab-CI",
+        "Coordination technique avec les équipes et transmission des bonnes pratiques"
       ]
     },
-    technologies: ["Java", "Spring", "Angular", "React", "PostgreSQL", "Git", "Jenkins"],
+    technologies: ["Java", "IIB", "Datapower", "MQMFT", "Maven", "GitLab-CI", "SonarQube", "Shell"],
     color: "#0ea5e9",
   },
   {
@@ -206,165 +204,165 @@ export const projects = [
   {
     id: 1,
     title: {
-      en: "Financial Trading Platform",
-      fr: "Plateforme de Trading Financier"
+      en: "Previsoft - HSE Risk Management Platform",
+      fr: "Previsoft - Plateforme de Gestion des Risques HSE"
     },
     category: {
-      en: "Enterprise Application",
-      fr: "Application Enterprise"
+      en: "SaaS Platform",
+      fr: "Plateforme SaaS"
     },
     description: {
-      en: "A comprehensive trading platform handling real-time market data and executing trades with sub-millisecond latency.",
-      fr: "Une plateforme de trading complète gérant les données de marché en temps réel et exécutant des trades avec une latence sub-milliseconde."
+      en: "Full-web occupational risk assessment and management software used by 1,000+ public and private organizations across France.",
+      fr: "Logiciel full web d'évaluation et de pilotage des risques professionnels utilisé par plus de 1 000 organisations publiques et privées en France."
     },
     longDescription: {
-      en: "Built a high-performance trading platform that processes millions of transactions daily. Implemented real-time data streaming, complex order management, and regulatory compliance features.",
-      fr: "Construction d'une plateforme de trading haute performance traitant des millions de transactions quotidiennes. Implémentation du streaming de données temps réel, gestion d'ordres complexes et conformité réglementaire."
+      en: "Working on Previsoft, the leading French HSE software acquired by Lefebvre Dalloz. Led the migration from Gulp/Bower to npm/Webpack, implemented the full internationalization system (translations and regulatory compliance per country), and developed an internal translation key management tool. Currently driving the React migration of the frontend.",
+      fr: "Travail sur Previsoft, le logiciel HSE de référence acquis par Lefebvre Dalloz. Migration du build system de Gulp/Bower vers npm/Webpack, implémentation complète du système d'internationalisation (traductions et réglementations par pays), et développement d'un outil interne de gestion des clés de traduction. Actuellement en charge de la migration React du frontend."
     },
-    technologies: ["Java", "Spring Boot", "Angular", "WebSocket", "Oracle", "Kafka"],
+    technologies: ["React", "AngularJS", "TypeScript", "Java", "Spring Boot", "PostgreSQL", "Webpack"],
     features: {
       en: [
-        "Real-time market data streaming",
-        "Complex order management system",
-        "Risk assessment algorithms",
-        "Regulatory compliance reporting"
+        "Build system migration from Gulp/Bower to npm/Webpack",
+        "Full internationalization system (i18n) with regulatory compliance",
+        "Translation key management tool (internal tooling)",
+        "Frontend migration from AngularJS to React"
       ],
       fr: [
-        "Streaming de données de marché en temps réel",
-        "Système de gestion d'ordres complexe",
-        "Algorithmes d'évaluation des risques",
-        "Reporting de conformité réglementaire"
+        "Migration du build system de Gulp/Bower vers npm/Webpack",
+        "Système d'internationalisation complet (i18n) avec conformité réglementaire",
+        "Outil de gestion des clés de traduction (outillage interne)",
+        "Migration du frontend d'AngularJS vers React"
       ]
     },
     metrics: {
-      users: "500+",
-      transactions: "1M+/day",
-      uptime: "99.99%",
+      organizations: "1 000+",
+      modules: "10",
+      users: "Multi-pays",
     },
-    image: "/projects/trading.jpg",
+    image: "/projects/previsoft.jpg",
     color: "#2563eb",
   },
   {
     id: 2,
     title: {
-      en: "Portfolio Management System",
-      fr: "Système de Gestion de Portefeuille"
+      en: "Maestro - Internal Angular Framework",
+      fr: "Maestro - Framework Angular Interne"
     },
     category: {
-      en: "Web Application",
-      fr: "Application Web"
+      en: "Internal Framework",
+      fr: "Framework Interne"
     },
     description: {
-      en: "An intuitive portfolio management solution for wealth advisors and their clients.",
-      fr: "Une solution intuitive de gestion de portefeuille pour les conseillers patrimoniaux et leurs clients."
+      en: "Development and evolution of Amundi's internal Angular framework used by all development teams to standardize and accelerate application delivery.",
+      fr: "Développement et évolution du framework Angular interne d'Amundi utilisé par l'ensemble des équipes de développement pour standardiser et accélérer la livraison d'applications."
     },
     longDescription: {
-      en: "Developed a modern portfolio management system that enables wealth advisors to efficiently manage client portfolios, track performance, and generate comprehensive reports.",
-      fr: "Développement d'un système moderne de gestion de portefeuille permettant aux conseillers patrimoniaux de gérer efficacement les portefeuilles clients, suivre les performances et générer des rapports complets."
+      en: "Within Amundi's Core team, contributed to the creation of the \"Maestro\" framework — an internal Angular framework adopted by all development teams. Developed reusable components in collaboration with the UX/UI team, built a user preferences system with MongoDB/SQL persistence, and set up automatic changelog generation via a custom Git workflow script. Also provided technical support for Amundi developers on both front and back-end aspects of the framework.",
+      fr: "Au sein de l'équipe Core d'Amundi, contribution à la création du framework \"Maestro\" — un framework Angular interne adopté par l'ensemble des équipes de développement. Développement de composants réutilisables en collaboration avec l'équipe UX/UI, création d'un système de préférences utilisateurs avec persistance MongoDB/SQL, et mise en place de la génération automatique du changelog via un script custom de workflow Git. Support technique également pour les développeurs Amundi sur les aspects front et back du framework."
     },
-    technologies: ["Angular", "TypeScript", "Java", "Spring Security", "PostgreSQL", "Docker"],
+    technologies: ["Angular", "TypeScript", "Java", "Spring", "MongoDB", "SQL", "Maven", "Artifactory", "Keycloak"],
     features: {
       en: [
-        "Interactive portfolio dashboards",
-        "Performance analytics and reporting",
-        "Client communication portal",
-        "Automated rebalancing alerts"
+        "Reusable Angular components (collaboration with UX/UI team)",
+        "User preferences system with MongoDB/SQL persistence",
+        "Automatic changelog generation (custom Git workflow)",
+        "Technical support for developers (front & back)"
       ],
       fr: [
-        "Tableaux de bord interactifs",
-        "Analytique de performance et reporting",
-        "Portail de communication client",
-        "Alertes de rééquilibrage automatisé"
+        "Composants Angular réutilisables (collaboration équipe UX/UI)",
+        "Système de préférences utilisateurs avec persistance MongoDB/SQL",
+        "Génération automatique du changelog (workflow Git custom)",
+        "Support technique pour les développeurs (front & back)"
       ]
     },
     metrics: {
-      portfolios: "10,000+",
-      aum: "$5B+",
-      satisfaction: "98%",
+      duration: "3 ans 9 mois",
+      team: "Équipe Core",
+      users: "Toutes équipes",
     },
-    image: "/projects/portfolio.jpg",
+    image: "/projects/maestro.jpg",
     color: "#3b82f6",
   },
   {
     id: 3,
     title: {
-      en: "Compliance Monitoring Dashboard",
-      fr: "Tableau de Bord de Conformité"
+      en: "EIP - Enterprise Integration Platform",
+      fr: "EIP - Plateforme d'Intégration Entreprise"
     },
     category: {
-      en: "Analytics Platform",
-      fr: "Plateforme Analytique"
+      en: "Enterprise Integration",
+      fr: "Intégration Entreprise"
     },
     description: {
-      en: "Real-time compliance monitoring system for regulatory requirements in asset management.",
-      fr: "Système de surveillance de conformité en temps réel pour les exigences réglementaires en gestion d'actifs."
+      en: "Technical leadership on the Enterprise Integration Platform (EIP) project as part of Thales group's digital transformation.",
+      fr: "Leadership technique sur le projet Enterprise Integration Platform (EIP) dans le cadre de la transformation digitale du groupe Thales."
     },
     longDescription: {
-      en: "Created a sophisticated compliance monitoring platform that tracks regulatory requirements, identifies potential violations, and generates audit-ready reports.",
-      fr: "Création d'une plateforme sophistiquée de surveillance de conformité qui suit les exigences réglementaires, identifie les violations potentielles et génère des rapports prêts pour l'audit."
+      en: "As Technical Lead, I drove the setup of an Enterprise Service Bus (ESB) and a secured API Gateway for Thales' digital transformation. Architected and developed the integration platform, set up a unit testing framework with Powermock and code analysis with SonarQube, and implemented CI/CD pipelines with Maven and GitLab-CI. Ensured technical coordination with teams and knowledge transfer on development best practices.",
+      fr: "En tant que Technical Lead, j'ai piloté la mise en place d'un bus d'échange entreprise (ESB) et d'une API Gateway sécurisée pour la transformation digitale de Thales. Architecture et développement de la plateforme d'intégration, mise en place d'un framework de tests unitaires avec Powermock et d'analyse de code avec SonarQube, et implémentation de la CI/CD avec Maven et GitLab-CI. Coordination technique avec les équipes et transmission des bonnes pratiques de développement."
     },
-    technologies: ["React", "Node.js", "MongoDB", "D3.js", "Elasticsearch"],
+    technologies: ["Java", "IIB", "Datapower", "MQMFT", "Maven", "GitLab-CI", "SonarQube", "Shell"],
     features: {
       en: [
-        "Real-time compliance tracking",
-        "Automated alert system",
-        "Audit trail generation",
-        "Customizable rule engine"
+        "Enterprise Service Bus (ESB) and secured API Gateway",
+        "Unit testing framework (Powermock) and code analysis (SonarQube)",
+        "CI/CD pipeline with Maven and GitLab-CI",
+        "Technical coordination and best practices transmission"
       ],
       fr: [
-        "Suivi de conformité en temps réel",
-        "Système d'alertes automatisé",
-        "Génération de piste d'audit",
-        "Moteur de règles personnalisable"
+        "Bus d'échange entreprise (ESB) et API Gateway sécurisée",
+        "Framework de tests unitaires (Powermock) et analyse de code (SonarQube)",
+        "Pipeline CI/CD avec Maven et GitLab-CI",
+        "Coordination technique et transmission des bonnes pratiques"
       ]
     },
     metrics: {
-      rules: "1,000+",
-      alerts: "50K/month",
-      accuracy: "99.9%",
+      team: "Tech Lead",
+      duration: "8 mois",
+      methodology: "Agile",
     },
-    image: "/projects/compliance.jpg",
+    image: "/projects/thales.jpg",
     color: "#0ea5e9",
   },
   {
     id: 4,
     title: {
-      en: "API Gateway & Microservices",
-      fr: "API Gateway & Microservices"
+      en: "Sogelink - Construction Tech Platform",
+      fr: "Sogelink - Plateforme Construction Tech"
     },
     category: {
-      en: "Backend Infrastructure",
-      fr: "Infrastructure Backend"
+      en: "SaaS Platform",
+      fr: "Plateforme SaaS"
     },
     description: {
-      en: "Scalable API gateway managing authentication, rate limiting, and request routing for microservices.",
-      fr: "API gateway scalable gérant l'authentification, le rate limiting et le routage des requêtes pour les microservices."
+      en: "European leader in Construction Tech, providing digital solutions for infrastructure, construction sites, and asset management to 18,000+ clients.",
+      fr: "Leader européen de la Construction Tech, fournissant des solutions numériques pour les infrastructures, chantiers et patrimoine à plus de 18 000 clients."
     },
     longDescription: {
-      en: "Architected and implemented a robust API gateway that serves as the entry point for all microservices, handling authentication, authorization, rate limiting, and intelligent routing.",
-      fr: "Architecture et implémentation d'une API gateway robuste servant de point d'entrée pour tous les microservices, gérant authentification, autorisation, rate limiting et routage intelligent."
+      en: "Contributed to Sogelink's ecosystem of 12 applications at Norsys — the European leader in construction digitization. The platform includes DICT.fr, Mensura, Covadis, Geosnap, Land2Map, Cloud2Map, Littéralis, and more. It processes up to 200,000 documents per day and handles over 70% of construction site declarations in France, serving 220,000+ users.",
+      fr: "Contribution à l'écosystème de 12 applications Sogelink chez Norsys — leader européen de la digitalisation du BTP. La plateforme comprend DICT.fr, Mensura, Covadis, Geosnap, Land2Map, Cloud2Map, Littéralis, etc. Elle traite jusqu'à 200 000 documents par jour et gère plus de 70% des déclarations de chantiers en France, au service de plus de 220 000 utilisateurs."
     },
-    technologies: ["Java", "Spring Cloud", "Redis", "Docker", "Kubernetes", "Prometheus"],
+    technologies: ["Java", "Angular", "JavaScript", "PostgreSQL", "Git", "Jenkins"],
     features: {
       en: [
-        "OAuth2/JWT authentication",
-        "Dynamic rate limiting",
-        "Circuit breaker pattern",
-        "Service discovery"
+        "Ecosystem of 12 applications (DICT.fr, Mensura, Covadis, etc.)",
+        "Construction site declaration management (DT/DICT)",
+        "GIS integration and network data collection",
+        "High-volume document processing (200K/day)"
       ],
       fr: [
-        "Authentification OAuth2/JWT",
-        "Rate limiting dynamique",
-        "Pattern circuit breaker",
-        "Découverte de services"
+        "Écosystème de 12 applications (DICT.fr, Mensura, Covadis, etc.)",
+        "Gestion des déclarations de chantiers (DT/DICT)",
+        "Intégration SIG et collecte de données réseaux",
+        "Traitement massif de documents (200K/jour)"
       ]
     },
     metrics: {
-      requests: "10M+/day",
-      latency: "<5ms",
-      services: "50+",
+      apps: "12",
+      users: "220 000+",
+      marketShare: "70%",
     },
-    image: "/projects/api.jpg",
+    image: "/projects/sogelink.jpg",
     color: "#06b6d4",
   },
 ];

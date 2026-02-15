@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Heart, ArrowUp, Github, Linkedin } from 'lucide-react';
+import { Heart, ArrowUp, Linkedin } from 'lucide-react';
 import { personalInfo, navigation } from '../../data/portfolio';
 import { useLanguage } from '../../i18n/LanguageContext';
 
@@ -29,21 +29,15 @@ const Footer = () => {
               {personalInfo.tagline[language]}
             </p>
             <div className="flex gap-4">
-              {[
-                { icon: Github, href: personalInfo.github },
-                { icon: Linkedin, href: personalInfo.linkedin },
-              ].map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-white hover:bg-blue-500/20 transition-all"
-                  whileHover={{ y: -3 }}
-                >
-                  <social.icon size={20} />
-                </motion.a>
-              ))}
+              <motion.a
+                href={personalInfo.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-white/5 text-gray-400 hover:text-white hover:bg-blue-500/20 transition-all"
+                whileHover={{ y: -3 }}
+              >
+                <Linkedin size={20} />
+              </motion.a>
             </div>
           </div>
 

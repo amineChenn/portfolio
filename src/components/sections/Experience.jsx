@@ -257,7 +257,7 @@ const Experience = () => {
   }, []);
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-32 overflow-hidden">
+    <section id="experience" ref={sectionRef} className="relative overflow-hidden">
       <SectionTransition
         sectionId="experience"
         sectionName="Experience"
@@ -290,8 +290,8 @@ const Experience = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.8 }}
-            className="text-center mt-20"
-          >
+            className="text-center mt-20 mb-50"
+          >c
             <motion.a
               href="#contact"
               className="btn-secondary inline-flex"

@@ -26,7 +26,7 @@
 /* Global Reset & Base Styles */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
+  /*margin: 0;*/
   /*padding: 0;*/
 }
 
@@ -80,6 +80,13 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+/* Modal open - prevent background scroll */
+html.modal-open,
+html.modal-open body {
+  overflow: hidden !important;
+  touch-action: none;
 }
 
 .lenis.lenis-scrolling iframe {
@@ -391,11 +398,16 @@ section {
 }
 
 .skill-icon {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  perspective: 600px;
+}
+
+@keyframes spin-once {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
 }
 
 .skill-card:hover .skill-icon {
-  transform: rotateY(360deg) scale(1.1);
+  animation: spin-once 0.8s ease-in-out forwards;
 }
 
 /* Tech logo animations */
@@ -417,6 +429,25 @@ section {
   animation-play-state: paused;
   transform: scale(1.15) rotate(5deg);
   filter: brightness(1.2);
+}
+
+/* Marquee seamless scroll */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
 }
 
 /* About section bio text formatting */

@@ -96,8 +96,6 @@ I believe the best results come when you truly understand the client's business.
       intro: "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out through LinkedIn.",
       linkedin: 'LinkedIn',
       connectWithMe: 'Connect with me',
-      github: 'GitHub',
-      viewCode: 'View my code',
       location: 'Location',
       available: 'Available for new opportunities',
       yourName: 'Your Name',
@@ -109,6 +107,7 @@ I believe the best results come when you truly understand the client's business.
       sending: 'Sending...',
       messageSent: 'Message Sent!',
       sendMessage: 'Send Message',
+      invalidEmail: 'Please enter a valid email address',
     },
 
     // Footer
@@ -222,8 +221,6 @@ Je crois que les meilleurs résultats viennent quand on comprend vraiment le mé
       intro: "Je suis toujours ouvert à discuter de nouveaux projets, idées créatives, ou opportunités de faire partie de votre vision. N'hésitez pas à me contacter via LinkedIn.",
       linkedin: 'LinkedIn',
       connectWithMe: 'Me contacter',
-      github: 'GitHub',
-      viewCode: 'Voir mon code',
       location: 'Localisation',
       available: 'Disponible pour de nouvelles opportunités',
       yourName: 'Votre Nom',
@@ -235,6 +232,7 @@ Je crois que les meilleurs résultats viennent quand on comprend vraiment le mé
       sending: 'Envoi en cours...',
       messageSent: 'Message envoyé !',
       sendMessage: 'Envoyer',
+      invalidEmail: 'Veuillez entrer une adresse email valide',
     },
 
     // Footer

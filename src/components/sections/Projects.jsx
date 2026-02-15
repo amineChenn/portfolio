@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ExternalLink, Github, ChevronRight, X, Users, TrendingUp, Zap } from 'lucide-react';
+import { ExternalLink, ChevronRight, X, Users, TrendingUp, Zap } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
 import SectionTransition from '../ui/SectionTransition';
 import { projects } from '../../data/portfolio';
@@ -185,6 +185,11 @@ const ProjectCard = ({ project, index, isInView, onClick, language, t }) => {
 };
 
 const ProjectModal = ({ project, onClose, language, t }) => {
+  useEffect(() => {
+    document.documentElement.classList.add('modal-open');
+    return () => { document.documentElement.classList.remove('modal-open'); };
+  }, []);
+
   if (!project) return null;
 
   const title = typeof project.title === 'object' ? project.title[language] : project.title;
@@ -263,7 +268,7 @@ const ProjectModal = ({ project, onClose, language, t }) => {
           {/* Metrics */}
           <div className="grid grid-cols-3 gap-4 mb-10">
             {Object.entries(project.metrics).map(([key, value], index) => {
-              const icons = { users: Users, transactions: TrendingUp, uptime: Zap, portfolios: Users, aum: TrendingUp, satisfaction: Zap, rules: Users, alerts: TrendingUp, accuracy: Zap, requests: TrendingUp, latency: Zap, services: Users };
+              const icons = { users: Users, organizations: Users, modules: Zap, clients: Users, experts: Users, aum: TrendingUp, team: Users, duration: Zap, methodology: Zap, apps: Zap, marketShare: TrendingUp };
               const Icon = icons[key] || Zap;
 
               return (
@@ -334,7 +339,7 @@ const Projects = () => {
   const { t, language } = useLanguage();
 
   return (
-    <section id="projects" ref={sectionRef} className="relative py-32 md:py-40">
+    <section id="projects" ref={sectionRef} className="relative md:py-40">
       <SectionTransition
         sectionId="projects"
         sectionName="Projects"

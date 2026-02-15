@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Send, MapPin, Linkedin, Github, CheckCircle, Loader2 } from 'lucide-react';
+import { Send, MapPin, Linkedin, Mail, CheckCircle, Loader2 } from 'lucide-react';
 import SectionTitle from '../ui/SectionTitle';
 import SectionTransition from '../ui/SectionTransition';
 import { personalInfo } from '../../data/portfolio';
@@ -23,6 +23,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -122,29 +123,47 @@ const Contact = () => {
     return () => ctx.revert();
   }, []);
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   const handleChange = (e) => {
-    setFormState((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
+    if (name === 'email') {
+      if (value && !validateEmail(value)) {
+        setEmailError(t('contact.invalidEmail') || 'Adresse email invalide');
+      } else {
+        setEmailError('');
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(formState.email)) {
+      setEmailError(t('contact.invalidEmail') || 'Adresse email invalide');
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const { name, email, subject, message } = formState;
+    const body = `Nom: ${name}\nEmail: ${email}\n\n${message}`;
+    window.location.href = `mailto:${personalInfo.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setIsSubmitting(false);
     setIsSubmitted(true);
+    setEmailError('');
     setFormState({ name: '', email: '', subject: '', message: '' });
 
-    // Reset success message after 5 seconds
     setTimeout(() => setIsSubmitted(false), 5000);
   };
 
-  // Contact methods without email - LinkedIn is primary
   const contactMethods = [
     {
       icon: Linkedin,
@@ -153,13 +172,6 @@ const Contact = () => {
       href: personalInfo.linkedin,
       color: '#0A66C2',
       primary: true,
-    },
-    {
-      icon: Github,
-      label: t('contact.github'),
-      value: t('contact.viewCode'),
-      href: personalInfo.github,
-      color: '#ffffff',
     },
     {
       icon: MapPin,
@@ -171,7 +183,7 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-32">
+    <section id="contact" ref={sectionRef} className="relative">
       <SectionTransition
         sectionId="contact"
         sectionName="Contact"
@@ -282,9 +294,16 @@ const Contact = () => {
                     value={formState.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                    className={`w-full px-4 py-3 bg-white/5 border rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-1 transition-all ${
+                      emailError
+                        ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                        : 'border-white/10 focus:border-blue-500 focus:ring-blue-500'
+                    }`}
                     placeholder="john@example.com"
                   />
+                  {emailError && (
+                    <p className="mt-1 text-sm text-red-400">{emailError}</p>
+                  )}
                 </div>
               </div>
 
@@ -330,10 +349,9 @@ const Contact = () => {
 
               {/* Submit button */}
               <motion.button
-                className="form-field"
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
-                className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
+                className={`form-field w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
                   isSubmitted
                     ? 'bg-green-500 text-white'
                     : 'bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white hover:opacity-90'

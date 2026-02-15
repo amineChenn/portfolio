@@ -197,7 +197,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" ref={sectionRef} className="relative py-32 overflow-hidden">
+    <section id="about" ref={sectionRef} className="relative overflow-hidden">
       <SectionTransition
         sectionId="about"
         sectionName="About"
