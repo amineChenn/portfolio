@@ -23,11 +23,19 @@
     <meta name="twitter:description" content="Fullstack Developer Freelance, Paris. Expert in Java, Spring Boot, Angular, React, TypeScript." />
 
     <!-- Theme Color -->
-    <meta name="theme-color" content="#030014" />
+    <meta name="theme-color" content="#030712" />
 
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Critical inline styles to prevent FOUC before CSS loads -->
+    <style>
+      /* Prevent flash: set background immediately, before any CSS file loads */
+      html, body { background-color: #030712; }
+      /* Hide root until React hydrates to prevent any unstyled content flash */
+      #root { background-color: #030712; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

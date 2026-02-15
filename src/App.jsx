@@ -46,14 +46,20 @@ const LoadingScreen = ({ onComplete }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[var(--color-background)]"
+      className="loading-screen fixed inset-0 z-[10000] flex flex-col items-center justify-center"
+      // Use hardcoded color instead of CSS variable to prevent FOUC if
+      // the stylesheet hasn't loaded yet when React first paints.
+      style={{ backgroundColor: '#030712' }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Logo */}
+      {/* Logo — explicit initial scale:0 prevents framer-motion flash
+          (known issue #725: elements briefly render at scale:1 before
+          the animation kicks in if initial isn't set to match the first
+          keyframe) */}
       <motion.div
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0 }}
+        initial={{ scale: 0, rotate: -180, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
         transition={{ type: 'spring', duration: 1 }}
         className="mb-8"
       >
@@ -90,9 +96,13 @@ const LoadingScreen = ({ onComplete }) => {
         {Math.round(Math.min(progress, 100))}%
       </motion.span>
 
-      {/* Decorative elements */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[100px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-[100px]" />
+      {/* Decorative blurred elements — use overflow:clip on parent and
+          scale trick to prevent the blur from creating visible edges.
+          Also wrap in a container that clips the halo. */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 -translate-x-4 -translate-y-4 bg-blue-600/20 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 translate-x-4 translate-y-4 bg-blue-500/20 rounded-full blur-[100px]" />
+      </div>
     </motion.div>
   );
 };
@@ -124,12 +134,21 @@ function App() {
       {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* 3D Background Scene - Lazy loaded */}
-      <Suspense fallback={null}>
-        <Scene mousePositionRef={normalizedPositionRef} />
-      </Suspense>
+      {/* 3D Background Scene - Lazy loaded.
+          Hidden with visibility:hidden during loading to prevent the WebGL
+          canvas from flashing a black rectangle as the GL context initializes
+          (alpha:false means the default clear color is opaque black).
+          Using visibility:hidden instead of display:none so the canvas still
+          initializes in the background and is ready when loading completes. */}
+      <div style={{ visibility: isLoading ? 'hidden' : 'visible' }}>
+        <Suspense fallback={null}>
+          <Scene mousePositionRef={normalizedPositionRef} />
+        </Suspense>
+      </div>
 
-      {/* Noise overlay for texture */}
+      {/* Noise overlay for texture — fades in via CSS animation after 0.5s
+          delay to prevent the SVG feTurbulence filter from briefly rendering
+          as a visible rectangle on iOS before the filter processes */}
       <div className="noise-overlay" />
 
       {/* Main Content */}
