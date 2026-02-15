@@ -230,6 +230,7 @@ const ProjectModal = ({ project, onClose, language, t }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
       className="modal-overlay fixed inset-0 z-[60] flex items-start md:items-center justify-center p-0 md:p-8 overflow-y-auto"
       onClick={onClose}
     >
@@ -239,10 +240,10 @@ const ProjectModal = ({ project, onClose, language, t }) => {
       {/* Modal */}
       <motion.div
         ref={scrollRef}
-        initial={{ opacity: 0, scale: 0.95, y: 30 }}
+        initial={{ opacity: 0, scale: 0.97, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 30 }}
-        transition={{ type: 'spring', damping: 25 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.15 }}
         className="modal-content relative w-full max-w-4xl md:max-h-[85vh] md:rounded-2xl glass-effect overflow-y-auto"
         style={{
           maxHeight: '100dvh',
