@@ -59,17 +59,23 @@ export const useLenis = () => {
     gsap.ticker.lagSmoothing(0);
 
     // Only refresh ScrollTrigger on width changes (not height from address bar)
+    // Debounced to avoid excessive refreshes during window drag
     let lastWidth = window.innerWidth;
+    let resizeTimer;
     const handleResize = () => {
-      if (window.innerWidth !== lastWidth) {
-        lastWidth = window.innerWidth;
-        ScrollTrigger.refresh();
-      }
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth !== lastWidth) {
+          lastWidth = window.innerWidth;
+          ScrollTrigger.refresh();
+        }
+      }, 200);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     return () => {
+      clearTimeout(resizeTimer);
       lenis.destroy();
       gsap.ticker.remove(rafCallback);
       window.removeEventListener('resize', handleResize);

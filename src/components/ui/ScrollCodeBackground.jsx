@@ -153,6 +153,9 @@ const ScrollCodeBackground = () => {
     restDelta: 0.001
   });
 
+  // Extract transforms at hook level (not inline in JSX)
+  const scanlineOpacity = useTransform(smoothProgress, [0, 0.5, 1], [0, 0.5, 0]);
+
   return (
     <div
       ref={containerRef}
@@ -186,9 +189,7 @@ const ScrollCodeBackground = () => {
 
       {/* Scanline effect */}
       <motion.div
-        style={{
-          opacity: useTransform(smoothProgress, [0, 0.5, 1], [0, 0.5, 0])
-        }}
+        style={{ opacity: scanlineOpacity }}
         className="scanline"
       />
     </div>

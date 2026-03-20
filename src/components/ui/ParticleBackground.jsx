@@ -109,17 +109,20 @@ const ParticleBackground = () => {
     };
 
     // Draw connections between nearby particles
+    // Uses squared distance to avoid sqrt for the majority of pairs (no connection)
     const drawConnections = () => {
       const particles = particlesRef.current;
       const maxDistance = mobile ? 80 : 120;
+      const maxDistanceSq = maxDistance * maxDistance;
 
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distanceSq = dx * dx + dy * dy;
 
-          if (distance < maxDistance) {
+          if (distanceSq < maxDistanceSq) {
+            const distance = Math.sqrt(distanceSq);
             const opacity = (1 - distance / maxDistance) * 0.1; // Max 0.1 opacity
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -190,21 +193,29 @@ const ParticleBackground = () => {
       mouseRef.current.y = null;
     };
 
+    // Debounced resize to avoid reinitializing particles on every pixel change
+    let resizeTimer;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
+    };
+
     // Initialize
     resizeCanvas();
     animate();
 
-    // Event listeners
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
+    // Event listeners - passive: true to avoid blocking scroll/interactions
+    window.addEventListener('resize', debouncedResize, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     // Cleanup
     return () => {
+      clearTimeout(resizeTimer);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', debouncedResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
     };
@@ -221,6 +232,7 @@ const ParticleBackground = () => {
         height: '100%',
         zIndex: -1,
         pointerEvents: 'none',
+        willChange: 'transform',
       }}
       aria-hidden="true"
     />

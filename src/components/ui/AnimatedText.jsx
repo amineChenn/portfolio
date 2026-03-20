@@ -98,19 +98,20 @@ export const ParallaxText = ({ children, className = '', speed = 0.5 }) => {
     const element = ref.current;
     if (!element) return;
 
-    gsap.to(element, {
+    const tween = gsap.to(element, {
       y: () => window.innerHeight * speed,
       ease: 'none',
       scrollTrigger: {
         trigger: element,
         start: 'top bottom',
         end: 'bottom top',
-        scrub: true,
+        scrub: 1,
       },
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      tween.scrollTrigger?.kill();
+      tween.kill();
     };
   }, [speed]);
 

@@ -114,10 +114,8 @@ export const useScrollAnimation = (options = {}) => {
     });
 
     return () => {
+      tween.scrollTrigger?.kill();
       tween.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === element) st.kill();
-      });
     };
   }, [animation, duration, delay, start, end, scrub, markers, once]);
 
@@ -174,10 +172,8 @@ export const useStaggerAnimation = (options = {}) => {
     });
 
     return () => {
+      tween.scrollTrigger?.kill();
       tween.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === container) st.kill();
-      });
     };
   }, [childSelector, animation, stagger, duration, delay, start, once]);
 
@@ -228,10 +224,8 @@ export const useParallax = (options = {}) => {
     );
 
     return () => {
+      tween.scrollTrigger?.kill();
       tween.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === element) st.kill();
-      });
     };
   }, [speed, direction, start, end]);
 
@@ -274,10 +268,8 @@ export const useTextReveal = (options = {}) => {
     });
 
     return () => {
+      tween.scrollTrigger?.kill();
       tween.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === element) st.kill();
-      });
     };
   }, [type, duration, stagger, start, once]);
 
@@ -327,10 +319,8 @@ export const useSectionReveal = (sectionIndex = 0, options = {}) => {
     });
 
     return () => {
+      tween.scrollTrigger?.kill();
       tween.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === element) st.kill();
-      });
     };
   }, [sectionIndex, duration, delay, start, once]);
 

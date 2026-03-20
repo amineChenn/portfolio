@@ -633,6 +633,7 @@ section {
 
 .code-rain {
   animation: code-rain 8s linear infinite;
+  will-change: transform, opacity;
 }
 
 /* Compilation progress bar */
@@ -676,6 +677,7 @@ section {
   background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.5), transparent);
   animation: scanline 3s linear infinite;
   pointer-events: none;
+  will-change: transform;
 }
 
 /* Section code wrapper styles */
@@ -759,6 +761,7 @@ section {
 .floating-code {
   animation: float-code 6s ease-in-out infinite;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* Section reveal from code block */
@@ -832,4 +835,9 @@ textarea:focus-visible,
 
 .marquee-track {
   will-change: transform;
+}
+
+/* GPU promotion for the noise overlay (fixed, never changes) */
+.noise-overlay::before {
+  transform: translateZ(0);
 }
